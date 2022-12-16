@@ -1,11 +1,28 @@
+using Mem.Data;
+
+const string localCorsOptions = "_localCorsOptions";
+const string productionCorsOptions = "_productionCorsOptions";
+
 var builder = WebApplication.CreateBuilder(args);
 
+// Configure Mongodb
+
+MongoDbConfigurator.Configure();
+
 // Add services to the container.
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: localCorsOptions,
+        policyBuilder => { policyBuilder.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod(); });
+    
+    options.AddPolicy(name: productionCorsOptions, policyBuilder => policyBuilder.WithOrigins().WithMethods().AllowAnyHeader());
+});
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddData(builder.Configuration);
 
 var app = builder.Build();
 
@@ -14,6 +31,12 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    app.UseCors(localCorsOptions);
+}
+
+if (app.Environment.IsProduction())
+{
+    app.UseCors(productionCorsOptions);
 }
 
 app.UseHttpsRedirection();
