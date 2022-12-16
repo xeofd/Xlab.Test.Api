@@ -1,0 +1,21 @@
+﻿version: '3.8'
+
+services:
+  mongodb:
+    build:
+      context: .
+      dockerfile: db/Dockerfile
+    container_name: 'xlabtest_database'
+    restart: unless-stopped
+    environment:
+      MONGO_DATA_DIR: /db/data
+      MONGO_LOG_DIR: /dev/null
+      MONGO_INITDB_DATABASE: admin
+    ports:
+      - "27017-27019:27017-27019"
+    volumes:
+      - mongodb_data:/db/data
+  
+volumes:
+  mongodb_data:
+    external: true
