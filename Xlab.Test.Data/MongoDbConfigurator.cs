@@ -3,7 +3,7 @@ using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Bson.Serialization.Serializers;
 
-namespace Mem.Data;
+namespace Xlab.Test.Data;
 
 public static class MongoDbConfigurator
 {

@@ -1,4 +1,4 @@
-﻿namespace Mem.Data;
+﻿namespace Xlab.Test.Data;
 
 public class MongoDbOptions
 {

@@ -1,4 +1,4 @@
-using Mem.Data;
+using Xlab.Test.Data;
 
 const string localCorsOptions = "_localCorsOptions";
 const string productionCorsOptions = "_productionCorsOptions";

@@ -1,6 +1,6 @@
 ﻿using MongoDB.Bson.Serialization.Conventions;
 
-namespace Mem.Data;
+namespace Xlab.Test.Data;
 
 public class AppConventionPack : IConventionPack
 {
