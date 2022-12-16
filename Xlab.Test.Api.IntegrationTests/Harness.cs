@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Testing;
+﻿using System.Net;
+using Microsoft.AspNetCore.Mvc.Testing;
 
 namespace Xlab.Test.Api.IntegrationTests;
 
@@ -14,5 +15,13 @@ public class Harness
     {
         _factory = factory;
         Database = new DatabaseHarness(this);
+    }
+
+    public async Task<(HttpStatusCode statusCode, string response)> GetAllBusinesses()
+    {
+        var httpMessage = new HttpRequestMessage(HttpMethod.Get, "/businesses");
+        var httpResponse = await Client.SendAsync(httpMessage);
+
+        return (httpResponse.StatusCode, await httpResponse.Content.ReadAsStringAsync());
     }
 }
