@@ -24,4 +24,27 @@ public class BusinessesController : Controller
         return this.PagedOk(businesses, BusinessResourceRepresentation.From, pagination.PageId ?? 1,
             pagination.PageSize ?? 10);
     }
+
+    [HttpGet("{id:guid}")]
+    public async Task<IActionResult> GetById([FromRoute] Guid id, CancellationToken cancellationToken)
+    {
+        var businessQuery = Builders<Business>.Filter.Eq(b => b.id, id);
+        var business = (await _collection.FindAsync(businessQuery, cancellationToken: cancellationToken)).FirstOrDefault(cancellationToken);
+
+        if (business is null) return NotFound();
+
+        return Ok(BusinessResourceRepresentation.From(business));
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Create([FromBody] PostBusinessResourceRepresentation resource,
+        CancellationToken cancellationToken)
+    {
+        var createdBusiness = BusinessBuilder.From(resource);
+
+        await _collection.InsertOneAsync(createdBusiness, cancellationToken: cancellationToken);
+
+        return CreatedAtAction("GetById", new { id = createdBusiness.id },
+            new PostBusinessResponseResourceRepresentation { Id = createdBusiness.id });
+    }
 }

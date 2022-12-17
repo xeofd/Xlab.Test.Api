@@ -8,11 +8,11 @@ using Xlab.Test.Data;
 
 namespace Xlab.Test.Api.IntegrationTests.Businesses;
 
-public sealed class GettingAllBusinessesTests : IClassFixture<XLabWebApplicationFactory>, IAsyncLifetime
+public class GettingABusinessTests : IClassFixture<XLabWebApplicationFactory>, IAsyncLifetime
 {
     private readonly Harness _harness;
 
-    public GettingAllBusinessesTests(XLabWebApplicationFactory factory) => _harness = new Harness(factory);
+    public GettingABusinessTests(XLabWebApplicationFactory factory) => _harness = new Harness(factory);
     
     public Task InitializeAsync() => Task.CompletedTask;
 
@@ -22,32 +22,17 @@ public sealed class GettingAllBusinessesTests : IClassFixture<XLabWebApplication
     }
 
     [Fact]
-    public async Task GettingAllBusinesses_WhenNoBusinessesToReturn_ShouldReturn_200OK_AndEmptyArray()
-    {
-        var (statusCode, body, _) = await _harness.GetAllBusinesses();
-
-        using var _ = new AssertionScope();
-        statusCode.Should().Be(HttpStatusCode.OK);
-        
-        var response = JsonDocument.Parse(body).RootElement;
-        response.GetArrayLength().Should().Be(0);
-    }
-
-    [Fact]
-    public async Task GettingAllBusinesses_WhenBusinessesExistInDatabase_ShouldReturnArrayOfBusinesses()
+    public async Task GettingABusiness_WithAValidId_ShouldReturn200Ok_AndBusinessInformation()
     {
         var business = new BusinessBuilder().WithName("Ben's Pub").Build();
         await _harness.Database.AddBusiness(business);
         
-        var (statusCode, body, _) = await _harness.GetAllBusinesses();
+        var (statusCode, body, _) = await _harness.GetABusiness(business.id);
 
         using var _ = new AssertionScope();
         statusCode.Should().Be(HttpStatusCode.OK);
-        
-        var response = JsonDocument.Parse(body).RootElement;
-        response.GetArrayLength().Should().Be(1);
 
-        var returnedItem = response.EnumerateArray().FirstOrDefault();
+        var returnedItem = JsonDocument.Parse(body).RootElement;
         returnedItem.GetProperty("id").GetGuid().Should().Be(business.id);
         returnedItem.GetProperty("name").GetString().Should().Be(business.name);
         returnedItem.GetProperty("category").GetString().Should().Be(business.category);
@@ -68,18 +53,14 @@ public sealed class GettingAllBusinessesTests : IClassFixture<XLabWebApplication
     }
 
     [Fact]
-    public async Task GettingAllBusinesses_ShouldReturnPaginatedResponse_WithMaximumOf10ItemsPerPage()
+    public async Task GettingABusiness_WithInvalidId_ShouldReturn404NotFound()
     {
-        await _harness.Database.AddBusinesses(15);
+        var business = new BusinessBuilder().WithName("Ben's Pub").Build();
+        await _harness.Database.AddBusiness(business);
         
-        var (statusCode, body, headers) = await _harness.GetAllBusinesses();
+        var (statusCode, _, _) = await _harness.GetABusiness(Guid.NewGuid());
 
         using var _ = new AssertionScope();
-        statusCode.Should().Be(HttpStatusCode.OK);
-        
-        var response = JsonDocument.Parse(body).RootElement;
-        response.GetArrayLength().Should().Be(10);
-
-        headers.NonValidated["Link"].ToString().Should().Be("/Businesses?pageId=1&pageSize=10; rel=first, /Businesses?pageId=2&pageSize=10; rel=next, /Businesses?pageId=2&pageSize=10; rel=last");
+        statusCode.Should().Be(HttpStatusCode.NotFound);
     }
 }

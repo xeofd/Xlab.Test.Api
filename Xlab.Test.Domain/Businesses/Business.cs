@@ -1,11 +1,11 @@
 ﻿namespace Xlab.Test.Domain.Businesses;
 
 public record Business(
-    Guid id, 
-    string name, 
-    string category, 
-    string url, 
-    string excerpt, 
+    Guid id,
+    string name,
+    string category,
+    string url,
+    string excerpt,
     string thumbnail,
     double lat,
     double lng,
@@ -18,4 +18,4 @@ public record Business(
     int stars_value,
     DateTime date,
     IEnumerable<string> tags
-    );
+);

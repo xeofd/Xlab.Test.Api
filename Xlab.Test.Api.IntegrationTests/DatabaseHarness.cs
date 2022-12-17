@@ -28,4 +28,12 @@ public class DatabaseHarness
             await AddBusiness(new BusinessBuilder().WithName($"name-{Guid.NewGuid()}").Build());
         }
     }
+
+    public async Task<Business> GetBusinessById(Guid id)
+    {
+        using var scope = _rootHarness.Services.CreateScope();
+        var db = scope.ServiceProvider.GetRequiredService<IMongoDatabase>().GetBusinessesCollection();
+
+        return (await db.FindAsync(b => b.id.Equals(id))).FirstOrDefault();
+    }
 }
