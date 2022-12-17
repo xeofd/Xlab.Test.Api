@@ -14,7 +14,8 @@ public static class ServiceCollectionExtensions
     
     public static IServiceCollection AddMongoTestDatabase(this IServiceCollection services)
     {
+        var dbName = $"xlab_testing_{Guid.NewGuid()}";
         return services.RemoveService<IMongoDatabase>().AddTransient<IMongoDatabase>(s =>
-            s.GetRequiredService<IMongoClient>().GetDatabase("mem_test"));
+            s.GetRequiredService<IMongoClient>().GetDatabase(dbName));
     }
 }
