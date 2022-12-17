@@ -82,4 +82,24 @@ public sealed class GettingAllBusinessesTests : IClassFixture<XLabWebApplication
 
         headers.NonValidated["Link"].ToString().Should().Be("/Businesses?pageId=1&pageSize=10; rel=first, /Businesses?pageId=2&pageSize=10; rel=next, /Businesses?pageId=2&pageSize=10; rel=last");
     }
+
+    [Fact]
+    public async Task GettingAllBusinesses_SearchingUsingTags_ShouldReturnOnlyResultsWithCorrectTags()
+    {
+        var businessWithTags = new BusinessBuilder().WithName("Ben's Pub").WithTags(new []{ "live music", "sofa" }).Build();
+        var businessWitoutTags = new BusinessBuilder().WithName("Ben's Pub without tags").Build();
+        
+        await _harness.Database.AddBusiness(businessWithTags);
+        await _harness.Database.AddBusiness(businessWitoutTags);
+        
+        var (statusCode, body, _) = await _harness.GetAllBusinesses(search: "sofa");
+
+        using var _ = new AssertionScope();
+        statusCode.Should().Be(HttpStatusCode.OK);
+        
+        var response = JsonDocument.Parse(body).RootElement;
+        response.GetArrayLength().Should().Be(1);
+        var returnedItem = response.EnumerateArray().FirstOrDefault();
+        returnedItem.GetProperty("id").GetGuid().Should().Be(businessWithTags.id);
+    }
 }

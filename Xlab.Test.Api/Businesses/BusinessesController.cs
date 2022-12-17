@@ -14,10 +14,15 @@ public class BusinessesController : Controller
     public BusinessesController(IMongoDatabase database) => _collection = database.GetBusinessesCollection();
 
     [HttpGet]
-    public async Task<IActionResult> GetAll([FromQuery] PaginationQueryParameters pagination,
+    public async Task<IActionResult> GetAll(
+        [FromQuery] PaginationQueryParameters pagination,
+        [FromQuery] string? tag,
         CancellationToken cancellationToken)
     {
-        var businesses = (await _collection.FindAsync(b => true, cancellationToken: cancellationToken))
+        var allResults = Builders<Business>.Filter.Empty;
+        var searchByTags = Builders<Business>.Filter.Where(b => b.tags.Contains(tag));
+
+        var businesses = (await _collection.FindAsync(tag is not null ? searchByTags : allResults, cancellationToken: cancellationToken))
             .ToList(cancellationToken)
             .AsQueryable();
 

@@ -20,9 +20,10 @@ public class Harness
         Database = new DatabaseHarness(this);
     }
 
-    public async Task<(HttpStatusCode statusCode, string response, HttpHeaders headers)> GetAllBusinesses()
+    public async Task<(HttpStatusCode statusCode, string response, HttpHeaders headers)> GetAllBusinesses(string? search = null)
     {
-        var httpMessage = new HttpRequestMessage(HttpMethod.Get, "/businesses");
+        var searchQuery = search is not null ? $"?tag={search}" : "";
+        var httpMessage = new HttpRequestMessage(HttpMethod.Get, $"/businesses{searchQuery}");
         var httpResponse = await Client.SendAsync(httpMessage);
 
         return (httpResponse.StatusCode, await httpResponse.Content.ReadAsStringAsync(), httpResponse.Headers);

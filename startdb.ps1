@@ -1,11 +1,4 @@
-﻿If ($null -eq (docker volume ls --filter "Name=mongodb_data" --format "{{.Name}}")) {
-    Write-Host "Creating volumes..."
-    docker volume create --name mongodb_data
-} Else {
-    Write-Host "Volumes exist, continuing..."
-}
-
-Write-Host ""
+﻿Write-Host ""
 $rebuildrequired = Read-Host -Prompt "Is a code rebuild required? (y/n)"
 if (($rebuildrequired -eq "y") -Or ($null -eq $rebuildrequired)){
     docker-compose up --build -d

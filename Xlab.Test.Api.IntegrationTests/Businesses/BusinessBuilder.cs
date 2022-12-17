@@ -28,6 +28,12 @@ public class BusinessBuilder
         return this;
     }
     
+    public BusinessBuilder WithTags(IEnumerable<string> tags)
+    {
+        _tags = tags;
+        return this;
+    }
+    
     public Business Build()
     {
         return new Business(
