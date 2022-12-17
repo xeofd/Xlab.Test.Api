@@ -25,6 +25,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Xlab.Test.Api\Xlab.Test.Api.csproj" />
+      <ProjectReference Include="..\Xlab.Test.Domain\Xlab.Test.Domain.csproj" />
     </ItemGroup>
 
 </Project>

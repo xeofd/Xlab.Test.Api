@@ -17,5 +17,5 @@ public record Business(
     int stars_amenities,
     int stars_value,
     DateTime date,
-    IEnumerable<string> Tags
+    IEnumerable<string> tags
     );

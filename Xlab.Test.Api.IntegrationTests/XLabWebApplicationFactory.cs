@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.Testing;
 
 namespace Xlab.Test.Api.IntegrationTests;
 
-public class XLabWebApplicationFactory : WebApplicationFactory<Program>
+public sealed class XLabWebApplicationFactory : WebApplicationFactory<Program>
 {
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
