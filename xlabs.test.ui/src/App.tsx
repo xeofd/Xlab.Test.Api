@@ -4,11 +4,10 @@ import {
     Typography,
     TextField,
     Paper,
-    Pagination,
 } from "@mui/material";
 import axios, { Axios } from "axios";
 import { useEffect, useState } from "react";
-import { BusinessBlock } from "./BusinessBlock";
+import { BusinessSection } from "./BusinessSection";
 import { Business } from "./domain/Business";
 
 function ConfigureAxios(): Axios {
@@ -33,11 +32,6 @@ export function App() {
     const [totalPages, setTotalPages] = useState<number>(1);
     const [businesses, setBusinesses] = useState<Business[]>([]);
     const [httpClient, _] = useState<Axios>(ConfigureAxios);
-
-    const setPageNumber = (value: number) => {
-        console.log(value);
-        setPage(value);
-    };
 
     useEffect(() => {
         (async () => {
@@ -73,31 +67,19 @@ export function App() {
             <Container
                 sx={{ overflow: "scroll", maxHeight: "calc(100vh - 200px)" }}
             >
-                <Pagination
-                    count={totalPages}
-                    color="secondary"
-                    variant="outlined"
-                    onChange={(_, value) => setPageNumber(value)}
-                    sx={{
-                        marginTop: 2,
-                        marginBottom: 2,
-                    }}
-                    siblingCount={7}
-                />
-                {businesses.map((business, index) => (
-                    <BusinessBlock data={business} key={index} />
-                ))}
-                <Pagination
-                    count={totalPages}
-                    color="secondary"
-                    variant="outlined"
-                    onChange={(_, value) => setPageNumber(value)}
-                    sx={{
-                        marginTop: 2,
-                        marginBottom: 2,
-                    }}
-                    siblingCount={7}
-                />
+                {businesses.length > 0 ? (
+                    <BusinessSection
+                        totalPages={totalPages}
+                        businesses={businesses}
+                        setPageNumber={setPage}
+                    />
+                ) : (
+                    <Container sx={{ padding: 3 }}>
+                        <Typography variant="h6">
+                            No businesses found
+                        </Typography>
+                    </Container>
+                )}
             </Container>
         </Container>
     );
