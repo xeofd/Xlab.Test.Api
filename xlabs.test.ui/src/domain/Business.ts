@@ -1,23 +1,23 @@
 export interface Business {
-    Id: string;
-    Name: string;
-    Category: string;
-    Url: string;
-    Excerpt: string;
-    Thumbnail: string;
-    Lat: number;
-    Lng: number;
-    Address: string;
-    Phone: string;
-    Twitter: string;
-    Stars: BusinessStars;
-    Date: Date;
-    Tags: string[];
+    id: string;
+    name: string;
+    category: string;
+    url: string;
+    excerpt: string;
+    thumbnail: string;
+    lat: number;
+    lng: number;
+    address: string;
+    phone: string;
+    twitter: string;
+    stars: BusinessStars;
+    date: Date;
+    tags: string[];
 }
 
 export interface BusinessStars {
-    Beer: number;
-    Atmosphere: number;
-    Amenities: number;
-    Value: number;
+    beer: number;
+    atmosphere: number;
+    amenities: number;
+    value: number;
 }

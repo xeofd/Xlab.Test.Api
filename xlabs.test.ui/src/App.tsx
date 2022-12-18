@@ -1,24 +1,31 @@
-import {
-    Grid,
-    Container,
-    Typography,
-    TextField,
-    Paper,
-    Button,
-} from "@mui/material";
+import { Grid, Container, Typography, TextField, Paper } from "@mui/material";
+import axios, { Axios } from "axios";
 import { useEffect, useState } from "react";
+import { BusinessBlock } from "./BusinessBlock";
 import { Business } from "./domain/Business";
+
+function ConfigureAxios(): Axios {
+    return axios.create({
+        baseURL: "https://localhost:7048/",
+    });
+}
 
 export function App() {
     const [searchTerm, setSearchTerm] = useState<string | undefined>(undefined);
     const [businesses, setBusinesses] = useState<Business[]>([]);
-
-    const handleSearch = () => {
-        console.log(searchTerm);
-    };
+    const [httpClient, _] = useState<Axios>(ConfigureAxios);
 
     useEffect(() => {
-        (async () => {})();
+        (async () => {
+            let search = "";
+            if (searchTerm) search = `?tag=${searchTerm}`;
+
+            const results = await httpClient.get<Business[]>(
+                `businesses${search}`
+            );
+
+            setBusinesses(results.data);
+        })();
     }, [searchTerm, setBusinesses]);
 
     return (
@@ -26,38 +33,25 @@ export function App() {
             <Container sx={{ padding: 2 }}>
                 <Typography variant="h4">XLab Techtest search</Typography>
             </Container>
-            <Container>
+            <Container sx={{ marginBottom: 1 }}>
                 <Paper sx={{ padding: 2 }}>
-                    <Grid
-                        container
-                        justifyItems="center"
-                        alignItems="center"
-                        spacing={2}
-                    >
-                        <Grid item xs={9}>
-                            <TextField
-                                variant="outlined"
-                                label="Search by tag"
-                                onChange={(event) =>
-                                    setSearchTerm(event.currentTarget.value)
-                                }
-                                sx={{ width: "100%" }}
-                            />
-                        </Grid>
-                        <Grid item xs={3}>
-                            <Button
-                                variant="contained"
-                                size="large"
-                                sx={{ width: "100%" }}
-                                onClick={handleSearch}
-                            >
-                                Search
-                            </Button>
-                        </Grid>
-                    </Grid>
+                    <TextField
+                        variant="outlined"
+                        label="Search by tag"
+                        onChange={(event) =>
+                            setSearchTerm(event.currentTarget.value)
+                        }
+                        sx={{ width: "100%" }}
+                    />
                 </Paper>
             </Container>
-            <Grid container></Grid>
+            <Container
+                sx={{ overflow: "scroll", maxHeight: "calc(100vh - 200px)" }}
+            >
+                {businesses.map((business) => (
+                    <BusinessBlock data={business} />
+                ))}
+            </Container>
         </Container>
     );
 }
