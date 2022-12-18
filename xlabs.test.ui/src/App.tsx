@@ -1,34 +1,63 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import './App.css'
+import {
+    Grid,
+    Container,
+    Typography,
+    TextField,
+    Paper,
+    Button,
+} from "@mui/material";
+import { useEffect, useState } from "react";
+import { Business } from "./domain/Business";
 
-function App() {
-  const [count, setCount] = useState(0)
+export function App() {
+    const [searchTerm, setSearchTerm] = useState<string | undefined>(undefined);
+    const [businesses, setBusinesses] = useState<Business[]>([]);
 
-  return (
-    <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </div>
-  )
+    const handleSearch = () => {
+        console.log(searchTerm);
+    };
+
+    useEffect(() => {
+        (async () => {})();
+    }, [searchTerm, setBusinesses]);
+
+    return (
+        <Container maxWidth="md" sx={{ margin: "0 auto", textAlign: "center" }}>
+            <Container sx={{ padding: 2 }}>
+                <Typography variant="h4">XLab Techtest search</Typography>
+            </Container>
+            <Container>
+                <Paper sx={{ padding: 2 }}>
+                    <Grid
+                        container
+                        justifyItems="center"
+                        alignItems="center"
+                        spacing={2}
+                    >
+                        <Grid item xs={9}>
+                            <TextField
+                                variant="outlined"
+                                label="Search by tag"
+                                onChange={(event) =>
+                                    setSearchTerm(event.currentTarget.value)
+                                }
+                                sx={{ width: "100%" }}
+                            />
+                        </Grid>
+                        <Grid item xs={3}>
+                            <Button
+                                variant="contained"
+                                size="large"
+                                sx={{ width: "100%" }}
+                                onClick={handleSearch}
+                            >
+                                Search
+                            </Button>
+                        </Grid>
+                    </Grid>
+                </Paper>
+            </Container>
+            <Grid container></Grid>
+        </Container>
+    );
 }
-
-export default App
