@@ -13,9 +13,9 @@ MongoDbConfigurator.Configure();
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(name: localCorsOptions,
-        policyBuilder => { policyBuilder.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod(); });
+        policyBuilder => policyBuilder.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod().WithExposedHeaders("Link"));
     
-    options.AddPolicy(name: productionCorsOptions, policyBuilder => policyBuilder.WithOrigins().WithMethods().AllowAnyHeader());
+    options.AddPolicy(name: productionCorsOptions, policyBuilder => policyBuilder.WithOrigins().WithMethods().AllowAnyHeader().WithExposedHeaders("Link"));
 });
 
 builder.Services.AddControllers();

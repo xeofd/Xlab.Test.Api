@@ -1,4 +1,11 @@
-import { Grid, Container, Typography, TextField, Paper } from "@mui/material";
+import {
+    Grid,
+    Container,
+    Typography,
+    TextField,
+    Paper,
+    Pagination,
+} from "@mui/material";
 import axios, { Axios } from "axios";
 import { useEffect, useState } from "react";
 import { BusinessBlock } from "./BusinessBlock";
@@ -10,23 +17,41 @@ function ConfigureAxios(): Axios {
     });
 }
 
+function GetTotalPages(header: string | undefined): number {
+    return new Number(
+        header
+            ?.split(",")
+            .find((p) => p.includes("rel=last"))
+            ?.split("&")[0]
+            .slice(20)
+    ).valueOf();
+}
+
 export function App() {
     const [searchTerm, setSearchTerm] = useState<string | undefined>(undefined);
+    const [page, setPage] = useState<number>(1);
+    const [totalPages, setTotalPages] = useState<number>(1);
     const [businesses, setBusinesses] = useState<Business[]>([]);
     const [httpClient, _] = useState<Axios>(ConfigureAxios);
+
+    const setPageNumber = (value: number) => {
+        console.log(value);
+        setPage(value);
+    };
 
     useEffect(() => {
         (async () => {
             let search = "";
-            if (searchTerm) search = `?tag=${searchTerm}`;
+            if (searchTerm) search = `&tag=${searchTerm}`;
 
             const results = await httpClient.get<Business[]>(
-                `businesses${search}`
+                `businesses?pageId=${page}${search}`
             );
 
             setBusinesses(results.data);
+            setTotalPages(GetTotalPages(results.headers["link"]));
         })();
-    }, [searchTerm, setBusinesses]);
+    }, [searchTerm, setBusinesses, page]);
 
     return (
         <Container maxWidth="md" sx={{ margin: "0 auto", textAlign: "center" }}>
@@ -48,9 +73,31 @@ export function App() {
             <Container
                 sx={{ overflow: "scroll", maxHeight: "calc(100vh - 200px)" }}
             >
-                {businesses.map((business) => (
-                    <BusinessBlock data={business} />
+                <Pagination
+                    count={totalPages}
+                    color="secondary"
+                    variant="outlined"
+                    onChange={(_, value) => setPageNumber(value)}
+                    sx={{
+                        marginTop: 2,
+                        marginBottom: 2,
+                    }}
+                    siblingCount={7}
+                />
+                {businesses.map((business, index) => (
+                    <BusinessBlock data={business} key={index} />
                 ))}
+                <Pagination
+                    count={totalPages}
+                    color="secondary"
+                    variant="outlined"
+                    onChange={(_, value) => setPageNumber(value)}
+                    sx={{
+                        marginTop: 2,
+                        marginBottom: 2,
+                    }}
+                    siblingCount={7}
+                />
             </Container>
         </Container>
     );
