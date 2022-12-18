@@ -46,10 +46,10 @@ public class GettingABusinessTests : IClassFixture<XLabWebApplicationFactory>, I
         returnedItem.GetProperty("twitter").GetString().Should().Be(business.twitter);
         returnedItem.GetProperty("date").GetDateTime().Should().BeCloseTo(business.date, TimeSpan.FromSeconds(10));
         returnedItem.GetProperty("tags").GetArrayLength().Should().Be(2);
-        returnedItem.GetProperty("stars").GetProperty("beer").GetInt32().Should().Be(business.stars_beer);
-        returnedItem.GetProperty("stars").GetProperty("atmosphere").GetInt32().Should().Be(business.stars_atmosphere);
-        returnedItem.GetProperty("stars").GetProperty("amenities").GetInt32().Should().Be(business.stars_amenities);
-        returnedItem.GetProperty("stars").GetProperty("value").GetInt32().Should().Be(business.stars_value);
+        returnedItem.GetProperty("stars").GetProperty("beer").GetDouble().Should().Be(business.stars_beer);
+        returnedItem.GetProperty("stars").GetProperty("atmosphere").GetDouble().Should().Be(business.stars_atmosphere);
+        returnedItem.GetProperty("stars").GetProperty("amenities").GetDouble().Should().Be(business.stars_amenities);
+        returnedItem.GetProperty("stars").GetProperty("value").GetDouble().Should().Be(business.stars_value);
     }
 
     [Fact]
