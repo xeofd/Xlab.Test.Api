@@ -1,4 +1,4 @@
-import { Pagination } from "@mui/material";
+import { Container, Pagination } from "@mui/material";
 import { BusinessBlock } from "./BusinessBlock";
 import { Business } from "./domain/Business";
 
@@ -14,32 +14,33 @@ export function BusinessSection({
     businesses,
 }: BusinessSectionProps) {
     return (
-        <Pagination
-            count={totalPages}
-            color="secondary"
-            variant="outlined"
-            onChange={(_, value) => setPageNumber(value)}
-            sx={{
-                marginTop: 2,
-                marginBottom: 2,
-            }}
-            siblingCount={7}
-        />
+        <Container data-cy="app-data">
+            <Pagination
+                count={totalPages}
+                color="secondary"
+                variant="outlined"
+                onChange={(_, value) => setPageNumber(value)}
+                sx={{
+                    marginTop: 2,
+                    marginBottom: 2,
+                }}
+                siblingCount={7}
+            />
+            {businesses.map((business, index) => (
+                <BusinessBlock data={business} key={index} />
+            ))}
+            <Pagination
+                count={totalPages}
+                color="secondary"
+                variant="outlined"
+                onChange={(_, value) => setPageNumber(value)}
+                sx={{
+                    marginTop: 2,
+                    marginBottom: 2,
+                }}
+                siblingCount={7}
+            />
+            ;
+        </Container>
     );
-    {
-        businesses.map((business, index) => (
-            <BusinessBlock data={business} key={index} />
-        ));
-    }
-    <Pagination
-        count={totalPages}
-        color="secondary"
-        variant="outlined"
-        onChange={(_, value) => setPageNumber(value)}
-        sx={{
-            marginTop: 2,
-            marginBottom: 2,
-        }}
-        siblingCount={7}
-    />;
 }

@@ -50,7 +50,7 @@ export function App() {
     return (
         <Container maxWidth="md" sx={{ margin: "0 auto", textAlign: "center" }}>
             <Container sx={{ padding: 2 }}>
-                <Typography variant="h4">XLab Techtest search</Typography>
+                <Typography variant="h4" data-cy="app-title">XLab Techtest search</Typography>
             </Container>
             <Container sx={{ marginBottom: 1 }}>
                 <Paper sx={{ padding: 2 }}>
@@ -61,6 +61,7 @@ export function App() {
                             setSearchTerm(event.currentTarget.value)
                         }
                         sx={{ width: "100%" }}
+                        data-cy="app-searchbar"
                     />
                 </Paper>
             </Container>
@@ -74,7 +75,7 @@ export function App() {
                         setPageNumber={setPage}
                     />
                 ) : (
-                    <Container sx={{ padding: 3 }}>
+                    <Container sx={{ padding: 3 }} data-cy="app-nodata">
                         <Typography variant="h6">
                             No businesses found
                         </Typography>
