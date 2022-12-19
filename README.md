@@ -5,7 +5,7 @@ This project contains:
  - Docker container running MongoDB
  - UI running React with Typescript
 
-All tests for both API and UI can be run without the need of the database but if you want to sping everything up to try it with sample data you will need to follow the steps bellow for the db.
+All tests for both API and UI can be run without the need of the database but if you want to sping everything up to try it with sample data you will need to follow the steps below for the db.
 
 ## DB setup
 
