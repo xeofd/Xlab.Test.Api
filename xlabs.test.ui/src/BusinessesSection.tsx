@@ -8,7 +8,7 @@ interface BusinessSectionProps {
     businesses: Business[];
 }
 
-export function BusinessSection({
+export function BusinessesSection({
     totalPages,
     setPageNumber,
     businesses,
@@ -40,7 +40,6 @@ export function BusinessSection({
                 }}
                 siblingCount={7}
             />
-            ;
         </Container>
     );
 }

@@ -1,13 +1,7 @@
-import {
-    Grid,
-    Container,
-    Typography,
-    TextField,
-    Paper,
-} from "@mui/material";
+import { Grid, Container, Typography, TextField, Paper } from "@mui/material";
 import axios, { Axios } from "axios";
 import { useEffect, useState } from "react";
-import { BusinessSection } from "./BusinessSection";
+import { BusinessesSection } from "./BusinessesSection";
 import { Business } from "./domain/Business";
 
 function ConfigureAxios(): Axios {
@@ -50,7 +44,9 @@ export function App() {
     return (
         <Container maxWidth="md" sx={{ margin: "0 auto", textAlign: "center" }}>
             <Container sx={{ padding: 2 }}>
-                <Typography variant="h4" data-cy="app-title">XLab Techtest search</Typography>
+                <Typography variant="h4" data-cy="app-title">
+                    XLab Techtest search
+                </Typography>
             </Container>
             <Container sx={{ marginBottom: 1 }}>
                 <Paper sx={{ padding: 2 }}>
@@ -69,7 +65,7 @@ export function App() {
                 sx={{ overflow: "scroll", maxHeight: "calc(100vh - 200px)" }}
             >
                 {businesses.length > 0 ? (
-                    <BusinessSection
+                    <BusinessesSection
                         totalPages={totalPages}
                         businesses={businesses}
                         setPageNumber={setPage}
