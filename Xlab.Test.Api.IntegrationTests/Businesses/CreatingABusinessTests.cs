@@ -4,7 +4,6 @@ using FluentAssertions;
 using FluentAssertions.Execution;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
-using Xlab.Test.Api.Businesses;
 using Xlab.Test.Data;
 
 namespace Xlab.Test.Api.IntegrationTests.Businesses;

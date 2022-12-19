@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
-using MongoDB.Driver;
 using Xlab.Test.Domain.Businesses;
 
 namespace Xlab.Test.Api.Businesses;

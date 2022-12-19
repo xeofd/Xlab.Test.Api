@@ -2,7 +2,6 @@
 using System.Net.Http.Headers;
 using System.Text;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Newtonsoft.Json.Linq;
 
 namespace Xlab.Test.Api.IntegrationTests;
 
